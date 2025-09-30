@@ -49,7 +49,7 @@ SECURITY LABEL FOR anon
 
 SECURITY LABEL FOR anon
   ON COLUMN legacy.landlords.sid
-  IS 'MASKED WITH FUNCTION anon.partial(sid,0, ''A34'', 7)';
+  IS 'MASKED WITH FUNCTION anon.partial(sid,1, ''34'', 8)';
 
 SECURITY LABEL FOR anon
   ON COLUMN legacy.landlords.tel
