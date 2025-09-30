@@ -5,10 +5,12 @@
   CREATE OR REPLACE FUNCTION anon.mask_sid_last3(text)
   RETURNS text AS $$
   BEGIN
-    IF length($1) >= 3 THEN
-      RETURN substring($1, 1, length($1)-3) || lpad((random()*1000)::int::text, 3, '0');
+    IF length($1) = 10 THEN
+      -- 正常台灣身分證10碼，只改後3碼
+      RETURN substring($1, 1, 7) || lpad((random()*1000)::int::text, 3, '0');
     ELSE
-      RETURN $1;
+      -- 不足10碼，產生 A + 9個隨機數字
+      RETURN 'A' || lpad((random()*1000000000)::bigint::text, 9, '0');
     END IF;
   END;
   $$ LANGUAGE plpgsql VOLATILE;
