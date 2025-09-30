@@ -15,7 +15,14 @@ SECURITY LABEL FOR anon
 
 SECURITY LABEL FOR anon
   ON COLUMN legacy.tenants.sid
-  IS 'MASKED WITH FUNCTION anon.partial(sid,1, ''34'', 8)';
+  IS 'MASKED WITH FUNCTION
+      CASE
+        WHEN length(sid) >= 3 THEN
+          substring(sid, 1, length(sid)-3) || lpad((random()*1000)::int::text, 3, ''0'')
+        ELSE
+          sid
+      END';
+
 
 SECURITY LABEL FOR anon
   ON COLUMN legacy.tenants.tel
@@ -46,6 +53,17 @@ SECURITY LABEL FOR anon
 SECURITY LABEL FOR anon
   ON COLUMN legacy.landlords.name
   IS 'MASKED WITH FUNCTION anon.partial(name,1, ''xx'', 0)';
+
+SECURITY LABEL FOR anon
+  ON COLUMN legacy.landlords.sid
+  IS 'MASKED WITH FUNCTION
+      CASE
+        WHEN length(sid) >= 3 THEN
+          substring(sid, 1, length(sid)-3) || lpad((random()*1000)::int::text, 3, ''0'')
+        ELSE
+          sid
+      END';
+
 
 SECURITY LABEL FOR anon
   ON COLUMN legacy.landlords.sid
